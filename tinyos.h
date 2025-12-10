@@ -320,7 +320,7 @@ Pid_t GetPPid(void);
 Tid_t CreateThread(Task task, int argl, void* args);
 
 /**
-  @brief Return the Tid of the current thread.
+  @brief Return the Tid of the current thread.    
  */
 Tid_t ThreadSelf();
 
@@ -509,7 +509,9 @@ typedef struct pipe_s {
 	Fid_t read;			/**< The read end of the pipe */
 	Fid_t write;		/**< The write end of the pipe */
 } pipe_t;
+/** @brief The length of the buffer for a pipe */
 
+#define PIPE_BUFFER_SIZE 4096
 
 /**
 	@brief Construct and return a pipe.

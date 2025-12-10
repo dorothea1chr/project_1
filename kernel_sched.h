@@ -100,6 +100,8 @@ enum SCHED_CAUSE {
 typedef struct thread_control_block {
 
 	PCB* owner_pcb; /**< @brief This is null for a free TCB */
+	PTCB* ptcb;
+	int priority;
 
 	cpu_context_t context; /**< @brief The thread context */
 	Thread_type type; /**< @brief The type of thread */
@@ -129,6 +131,24 @@ typedef struct thread_control_block {
 #endif
 
 } TCB;
+
+typedef struct process_thread_control_block{
+
+	TCB* tcb;
+	Task task;
+	int argl;
+	void* args;
+
+	int exitval;
+	int exited;
+
+	int detached;
+	CondVar exit_cv;
+	int refcount;
+
+	rlnode ptcb_list_node;
+
+} PTCB;
 
 /** @brief Thread stack size.
 
@@ -184,6 +204,10 @@ TCB* cur_thread();
   @brief A timeout constant, denoting no timeout for sleep.
 */
 #define NO_TIMEOUT ((TimerDuration)-1)
+
+void start_new_thread();
+
+PTCB* createPTCB(Task call,int argl,void* args);
 
 /**
 	@brief Create a new thread.
